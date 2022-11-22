@@ -51,8 +51,9 @@ def upload_weights(eth, weights, num):
     cnt = 0
 
     eth.minerStart()
+    # miner_node.unlockAccount(miner_node.accounts()[0], "123")
     print('[Info] Start uploading model parameters...')
-
+    eth.unlockAccount(eth.accounts()[0], "123")
     start = time.time()
     for i in range(0, num, batch):
         if ((cnt / batch) % 100 == 0):
@@ -99,7 +100,7 @@ def download_weights(start_index, size):
 
 
 if __name__ == "__main__":
-    # 解析节点参数 默认为第一个节点
+    # 解析节点参数 上传节点默认为第一个节点
     args_par = parse_args()
 
     # load model weights length:167060
@@ -109,11 +110,14 @@ if __name__ == "__main__":
     nodes = getNodes("./config/node_config.json")
     eth = EthInstance(nodes[args_par.NODE_NUM - 1].ip, nodes[args_par.NODE_NUM - 1].port)
 
+    # 第四个节点为矿工节点
+    # miner_node = EthInstance(nodes[3].ip, nodes[3].port)
+
     # load smart contract
     model_contract = load_contract(eth)
 
     # upload model parameters to smart contract 权重总长度
-    upload_weights(eth, weights, len(weights))
+    upload_weights(eth, weights, len(weights))  # 2400
 
     # download model parameters from smart contract
     # updates = download_weights(0, len(weights))

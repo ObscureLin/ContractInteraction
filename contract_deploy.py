@@ -14,7 +14,7 @@ class HexJsonEncoder(json.JSONEncoder):
 if __name__ == "__main__":
     # create eth interface
     nodes = getNodes("./config/node_config.json")
-    eth = EthInstance(nodes[3].ip, nodes[3].port)
+    eth = EthInstance(nodes[3].ip, nodes[3].port)  # 默认四号节点部署合约
 
     # smart contract compilation and deployment
     eth.minerStart()

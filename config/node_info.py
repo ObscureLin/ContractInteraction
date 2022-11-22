@@ -21,3 +21,10 @@ def getNodes(cfg_path):
     for i in range(count):
         nodes.append(Node(i + 1, words[0] + "." + words[1] + "." + words[2] + "." + str(int(words[-1]) + i), port + i))
     return nodes
+
+
+if __name__ == "__main__":
+    for i in range(len(getNodes("node_config.json"))):
+        print(getNodes("node_config.json")[i].ip)
+        print(getNodes("node_config.json")[i].port)
+        print(getNodes("node_config.json")[i].no)

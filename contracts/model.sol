@@ -2,9 +2,9 @@ pragma solidity >=0.7.0 <0.9.0;
 
 contract Model {
     // latest global model parameters
-    int256[167060] weight;
+    int16[167060] weight;
     // Model parameter updates received in a round
-    int256[167060] update;
+    int16[167060] update;
     // Number of local updates received in a round
     int8 count = 0;
     // Model parameter version
@@ -13,50 +13,50 @@ contract Model {
     int8 min = 3;
 
     // Receive local updates uploaded by the nodes
-    function SetUpdate(uint256 loc, int256 v) public {
+    function SetUpdate(uint32 loc, int16 v) public {
         update[loc] = v;
     }
 
     // Receive local updates uploaded by the nodes
-    function SetUpdates(uint256 index, uint8 start, int256[250] memory vs) public {
-        for (uint8 i = 0; i < 250 - start; i++) {
+    function SetUpdates(uint32 index, uint8 start, int16[240] memory vs) public {
+        for (uint8 i = 0; i < 240 - start; i++) {
             update[index + i] = vs[start + i];
         }
     }
 
     // Update global parameters after collecting enough local updates
     function UpdateWeights() private {
-        for (uint256 i = 0; i < update.length; i++)
+        for (uint32 i = 0; i < update.length; i++)
             weight[i] = update[i] / count;
         version++;
         count = 0;
     }
 
-    function GetWeights() public view returns (int256[167060] memory) {
+    function GetWeights() public view returns (int16[167060] memory) {
         return weight;
     }
 
-    function GetWeight(uint256 loc) public view returns (int256) {
+    function GetWeight(uint32 loc) public view returns (int16) {
         return weight[loc];
     }
 
-    function GetUpdates() public view returns (int256[167060] memory) {
+    function GetUpdates() public view returns (int16[167060] memory) {
         return update;
     }
 
-    function GetUpdate(uint256 loc) public view returns (int256) {
+    function GetUpdate(uint32 loc) public view returns (int16) {
         return update[loc];
     }
 
-    function GetCount() public view returns (int256) {
+    function GetCount() public view returns (int8) {
         return count;
     }
 
-    function GetVersion() public view returns (int256) {
+    function GetVersion() public view returns (int8) {
         return version;
     }
 
-    function GetMin() public view returns (int256) {
+    function GetMin() public view returns (int8) {
         return min;
     }
 
