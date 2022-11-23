@@ -39,7 +39,8 @@ def load_weights(weights_path):
 def load_contract(eth):
     with open("./outputs/contracts.json", 'r') as f:
         contracts = json.loads(f.read())
-    mc = eth.contract(contracts['model.sol']['address'], contracts['model.sol']['abi'])
+    mc = eth.contract(contracts['model.sol']
+                      ['address'], contracts['model.sol']['abi'])
     return mc
 
 
@@ -65,13 +66,15 @@ def upload_weights(eth, weights, num):
                 {'from': eth.accounts()[0]})
             tx_receipt = eth.getReceipt(tx_hash)
             gas.append(tx_receipt['gasUsed'])
-            print('[Info] Parameter upload progress: [{}/{}]'.format(cnt, size), end="\n")
+            print(
+                '[Info] Parameter upload progress: [{}/{}]'.format(cnt, size), end="\n")
         else:
             tx_hash = model_contract.functions.SetUpdates(i, 0, weights[i: i + batch]).transact(
                 {'from': eth.accounts()[0]})
             tx_receipt = eth.getReceipt(tx_hash)
             gas.append(tx_receipt['gasUsed'])
-            print('[Info] Parameter upload progress: [{}/{}]'.format(cnt, size), end="\r")
+            print(
+                '[Info] Parameter upload progress: [{}/{}]'.format(cnt, size), end="\r")
 
     end = time.time()
 
@@ -88,11 +91,14 @@ def download_weights(start_index, size):
 
     start = time.time()
     for i in range(size):
-        updates.append(model_contract.functions.GetUpdate(start_index + i).call())
+        updates.append(model_contract.functions.GetUpdate(
+            start_index + i).call())
         if i == size - 1:
-            print('[Info] Parameter download progress: [{}/{}]'.format(i + 1, size), end='\n')
+            print(
+                '[Info] Parameter download progress: [{}/{}]'.format(i + 1, size), end='\n')
         else:
-            print('[Info] Parameter download progress: [{}/{}]'.format(i + 1, size), end='\r')
+            print(
+                '[Info] Parameter download progress: [{}/{}]'.format(i + 1, size), end='\r')
 
     end = time.time()
     print('[Info] Parameter download take %s s' % (end - start))
@@ -108,7 +114,8 @@ if __name__ == "__main__":
 
     # create eth interface 定义上传权重的节点 默认为第一个节点
     nodes = getNodes("./config/node_config.json")
-    eth = EthInstance(nodes[args_par.NODE_NUM - 1].ip, nodes[args_par.NODE_NUM - 1].port)
+    eth = EthInstance(nodes[args_par.NODE_NUM - 1].ip,
+                      nodes[args_par.NODE_NUM - 1].port)
 
     # 第四个节点为矿工节点
     # miner_node = EthInstance(nodes[3].ip, nodes[3].port)
