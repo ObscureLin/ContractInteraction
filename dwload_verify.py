@@ -1,6 +1,6 @@
 import numpy as np
 import torch
-from numpy import float32
+from numpy import float32, float64
 from torch.cuda import device
 from config.node_info import *
 from utils.eth_instance import EthInstance
@@ -129,7 +129,7 @@ def loadData(batch_size):
     return test_loader
 
 
-def testModel(model, test_loader, img_H, img_W):
+def testModel(model, test_loader, img_H, img_W, device):
     start = time.time()
     correct = 0
     total = 0
@@ -192,4 +192,4 @@ if __name__ == "__main__":
 
     test_data = loadData(batch_size)
 
-    testModel(model, test_data, img_H, img_W)
+    testModel(model, test_data, img_H, img_W, device)
