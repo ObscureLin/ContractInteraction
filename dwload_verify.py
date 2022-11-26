@@ -67,10 +67,10 @@ def loadWightsIntoLocalModel(model, weights_path, dwload_weights):
     for item in range(len(fc3_b)):
         fc3_b[item] = int(dwload_weights[i]) / 10000
         i = i + 1
-    print(fc1_w)
-    print("--" * 10)
-    print(fc1_b)
-    print("---" * 10)
+    # print(fc1_w)
+    # print("--" * 10)
+    # print(fc1_b)
+    # print("---" * 10)
 
     model.fc1[0].weight.data = torch.from_numpy(np.array(fc1_w, dtype=float32))
     model.fc1[0].bias.data = torch.from_numpy(np.array(fc1_b, dtype=float32))
@@ -135,8 +135,9 @@ def testModel(model, test_loader, img_H, img_W):
     total = 0
     for i, data in enumerate(test_loader):
         images, labels = data['image'], data['label']
-        images = images.reshape(-1, img_H * img_W * 3).to(device)
-        images = images.to(torch.float32)
+        images = images.reshape(-1, img_H * img_W * 3)
+        # images = images.to(torch.float32)
+        images = images.to(device)
         labels = labels.to(device)
         output = model(images)
         values, predicte = torch.max(output, 1)
@@ -155,7 +156,7 @@ if __name__ == "__main__":
     img_H = args_par.IMAGE_HEIGHT
     img_W = args_par.IMAGE_WIDTH
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
+    print("[INFO]The device used for Testing Model is {}".format(device))
     if not os.path.exists("./outputs/download_weights.txt"):
         # 解析节点参数 上传节点默认为第一个节点
         # create eth interface 定义上传权重的节点 默认为第一个节点
@@ -177,7 +178,7 @@ if __name__ == "__main__":
         dwload_weights = f.read()
 
     dwload_weights = dwload_weights[1:-1].split(',')
-    print(dwload_weights)
+    # print(dwload_weights)
 
     input_num = img_H * img_W * 3
     hidden1_num = 64
@@ -187,6 +188,7 @@ if __name__ == "__main__":
 
     # load model weights length:167060
     loadWightsIntoLocalModel(model, "./weights/total.json", dwload_weights)
+    model = model.to(device)
 
     test_data = loadData(batch_size)
 
