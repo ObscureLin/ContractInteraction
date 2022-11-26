@@ -119,7 +119,7 @@ def download_weights(start_index, size):
 
 def loadData(batch_size):
     print("Read the pickle file of test set...")
-    with open('./outputs/test_set.pickle', 'rb') as f:
+    with open('dataset/test_set.pickle', 'rb') as f:
         test_set = pickle.load(f)
 
     test_loader = DataLoader(
